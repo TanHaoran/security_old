@@ -12,7 +12,12 @@ security:
 server:
   port: 8060
 
+#jerry:
+#  security:
+#    browser:
+#      loginPage: /demo-signIn.html
+
 jerry:
   security:
     browser:
-      loginPage: /demo-signIn.html
+      loginType: REDIRECT
