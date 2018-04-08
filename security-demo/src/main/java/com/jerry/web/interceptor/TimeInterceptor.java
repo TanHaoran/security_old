@@ -23,39 +23,38 @@ import java.util.Date;
 public class TimeInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        System.out.println("preHandle");
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("【拦截器】preHandle");
 
-        System.out.println(((HandlerMethod) o).getBean().getClass().getName());
+        System.out.println("【拦截器】" + ((HandlerMethod) handler).getBean().getClass().getName());
 
-        System.out.println(((HandlerMethod) o).getMethod().getName());
+        System.out.println("【拦截器】" + ((HandlerMethod) handler).getMethod().getName());
 
-        httpServletRequest.setAttribute("startTime", new Date().getTime());
+        request.setAttribute("startTime", new Date().getTime());
         // 这里如果返回false就不会调用后面的postHandle方法和afterCompletion方法
         return true;
     }
 
     @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        System.out.println("【拦截器】postHandle");
 
-        System.out.println("postHandle");
+        long start = (long) request.getAttribute("startTime");
 
-        long start = (long) httpServletRequest.getAttribute("startTime");
-
-        System.out.println("time interceptor 耗时: " + (new Date().getTime() - start));
+        System.out.println("【拦截器】time interceptor 耗时: " + (new Date().getTime() - start));
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        System.out.println("【拦截器】afterCompletion");
 
-        System.out.println("afterCompletion");
+        long start = (long) request.getAttribute("startTime");
 
-        long start = (long) httpServletRequest.getAttribute("startTime");
-
-        System.out.println("time interceptor 耗时: " + (new Date().getTime() - start));
+        System.out.println("【拦截器】time interceptor 耗时: " + (new Date().getTime() - start));
 
         // 如果有异常，e就会保存异常信息
         // 注意：如果有@ControllerAdvice标注的类处理掉异常后，这个e就不会有异常信息了
-        System.out.println("exception is " + e);
+        System.out.println("【拦截器】exception is " + ex);
     }
+
 }

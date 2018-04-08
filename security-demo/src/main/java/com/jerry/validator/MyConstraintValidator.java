@@ -11,7 +11,7 @@ import javax.validation.ConstraintValidatorContext;
  * User: Jerry
  * Date: 2018/4/3
  * Time: 9:33
- * Description: 自定义注解进行校验，只要该类实现了ConstraintValidator，那么该类自动就是bean类，不用添加Component注解
+ * Description: 自定义注解进行校验，只要该类实现了ConstraintValidator接口，那么该类自动就是bean类，不用添加Component注解
  */
 public class MyConstraintValidator implements ConstraintValidator<MyConstraint, Object> {
 

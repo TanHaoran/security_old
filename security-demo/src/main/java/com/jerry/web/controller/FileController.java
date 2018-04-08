@@ -39,10 +39,8 @@ public class FileController {
 
     @GetMapping("/{id}")
     public void download(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try (
-                InputStream in = new FileInputStream(new File(FOLDER, id + ".txt"));
-                OutputStream out = response.getOutputStream()
-        ) {
+        try (InputStream in = new FileInputStream(new File(FOLDER, id + ".txt"));
+             OutputStream out = response.getOutputStream()) {
 
             response.setContentType("application/x-download");
             response.addHeader("Content-Disposition", "attachment;filename=test.txt");

@@ -23,20 +23,20 @@ public class TimeAspect {
     @Around("execution(* com.jerry.web.controller.UserController.*(..))")
     public Object handleControllerMethod(ProceedingJoinPoint joinPoint) throws Throwable {
 
-        System.out.println("time aspect start");
+        System.out.println("【切片】start");
 
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
-            System.out.println("arg is " + arg);
+            System.out.println("【切片】arg is " + arg);
         }
 
         long start = new Date().getTime();
 
         Object proceed = joinPoint.proceed();
 
-        System.out.println("time aspect 耗时: " + (new Date().getTime() - start));
+        System.out.println("【切片】耗时: " + (new Date().getTime() - start));
 
-        System.out.println("time aspect end");
+        System.out.println("【切片】end");
 
         return proceed;
     }

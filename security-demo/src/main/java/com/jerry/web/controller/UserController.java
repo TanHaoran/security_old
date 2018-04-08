@@ -28,12 +28,31 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    @GetMapping
+    @GetMapping("/queryParam")
+    public List<User> queryParam(@RequestParam(value = "name", required = false, defaultValue = "thr") String username) {
+        List<User> users = new ArrayList<>();
+        users.add(new User());
+        users.add(new User());
+        users.add(new User());
+        return users;
+    }
+
+    @GetMapping("/queryCondition")
+    public List<User> queryCondition(UserQueryCondition condition) {
+        System.out.println(ReflectionToStringBuilder.toString(condition, ToStringStyle.MULTI_LINE_STYLE));
+        List<User> users = new ArrayList<>();
+        users.add(new User());
+        users.add(new User());
+        users.add(new User());
+        return users;
+    }
+
+    @GetMapping("/queryPaged")
     @JsonView(User.UserSimple.class)
     @ApiOperation(value = "用户查询服务")
-    public List<User> query(UserQueryCondition condition,
-                            // 这里的sort指的是默认升序
-                            @PageableDefault(page = 1, size = 10, sort = "username") Pageable pageable) {
+    public List<User> queryPaged(UserQueryCondition condition,
+                                 // 这里的sort指的是默认升序
+                                 @PageableDefault(page = 1, size = 10, sort = "username") Pageable pageable) {
         System.out.println(ReflectionToStringBuilder.toString(condition, ToStringStyle.MULTI_LINE_STYLE));
 
         // 打印分页的每页大小、页数和排序
@@ -54,8 +73,6 @@ public class UserController {
     @JsonView(User.UserDetail.class)
     public User getInfo(@ApiParam(value = "用户id") @PathVariable("id") String id) {
 
-//        throw new UserNotExistException(id);
-//        throw new RuntimeException(id);
         System.out.println("进入getInfo服务");
         User user = new User();
         user.setUsername("Jerry");
@@ -99,6 +116,12 @@ public class UserController {
     @DeleteMapping("/{id:\\d+}")
     public void delete(@PathVariable String id) {
         System.out.println(id);
+    }
+
+    @GetMapping("/getUserError/{id:\\d+}")
+    @JsonView(User.UserDetail.class)
+    public User getInfoError(@PathVariable("id") String id) {
+        throw new UserNotExistException(id);
     }
 
 

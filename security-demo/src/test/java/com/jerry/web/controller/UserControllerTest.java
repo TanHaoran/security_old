@@ -45,17 +45,38 @@ public class UserControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
+
     @Test
-    public void whenQuerySuccess() throws Exception {
-        String result = mockMvc.perform(get("/user")
+    public void whenQueryParamSuccess() throws Exception {
+        mockMvc.perform(get("/user/queryParam")
+                .param("username", "jerry")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(3));
+    }
+
+    @Test
+    public void whenQueryConditionSuccess() throws Exception {
+        mockMvc.perform(get("/user/queryCondition")
                 .param("username", "jerry")
                 .param("age", "20")
                 .param("ageTo", "30")
-                // .param("desc", "描述")
-                // .param("size", "15")
-                // .param("page", "3")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(3));
+    }
+
+    @Test
+    public void whenQuerySuccess() throws Exception {
+        String result = mockMvc.perform(get("/user/queryPaged")
+                .param("username", "jerry")
+                .param("age", "20")
+                .param("ageTo", "30")
+                .param("desc", "描述")
+                .param("size", "15")
+                .param("page", "3")
                 // 注意，这里传排序参数的时候逗号后面要紧跟排序方式
-                // .param("sort", "age,desc")
+                .param("sort", "age,desc")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(3))
@@ -105,7 +126,6 @@ public class UserControllerTest {
         Date date = new Date(LocalDateTime.now().plusYears(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         System.out.println(date.getTime());
 
-        // 推荐在传递日期的时候使用时间戳来传递
         String content = "{\"id\":\"1\",\"username\":\"Jerry\",\"password\":null,\"birthday\":\""
                 + date.getTime() + "\"}";
         String result = mockMvc.perform(put("/user/1")

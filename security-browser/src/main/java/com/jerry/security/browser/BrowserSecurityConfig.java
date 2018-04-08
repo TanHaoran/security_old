@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
  * Time: 9:11
  * Description:
  */
-@Configuration
+// @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

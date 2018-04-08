@@ -17,23 +17,24 @@ import java.util.Date;
 // @Component
 public class TimeFilter implements Filter {
 
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("time filter init");
+        System.out.println("【过滤器】初始化");
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("time filter start");
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        System.out.println("【过滤器】开始");
         long start = new Date().getTime();
-        filterChain.doFilter(servletRequest, servletResponse);
-        long end = new Date().getTime();
-        System.out.println("time filter 耗时: " + (new Date().getTime() - start));
-        System.out.println("time filter finish");
+        chain.doFilter(request, response);
+        System.out.println("【过滤器】耗时: " + (new Date().getTime() - start));
+        System.out.println("【过滤器】结束");
     }
 
     @Override
     public void destroy() {
-        System.out.println("time filter destroy");
+        System.out.println("【过滤器】销毁");
     }
+
 }
