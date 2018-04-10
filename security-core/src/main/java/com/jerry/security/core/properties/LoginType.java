@@ -9,7 +9,9 @@ package com.jerry.security.core.properties;
  */
 public enum LoginType {
 
+    // 重定向
     REDIRECT,
 
+    // JSON信息
     JSON
 }

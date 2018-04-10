@@ -7,6 +7,7 @@ package com.jerry.dto;
  * Time: 13:51
  * Description:
  */
+
 public class FileInfo {
 
     private String path;

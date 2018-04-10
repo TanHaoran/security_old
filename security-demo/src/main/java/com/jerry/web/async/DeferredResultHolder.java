@@ -11,11 +11,12 @@ import java.util.Map;
  * User: Jerry
  * Date: 2018/4/3
  * Time: 14:49
- * Description:
+ * Description: 模拟的在线程之间传递消息的对象
  */
 @Component
 public class DeferredResultHolder {
 
+    // String放的是订单，DeferredResult放的就是订单的处理结果
     private Map<String, DeferredResult> map = new HashMap<>();
 
     public Map<String, DeferredResult> getMap() {

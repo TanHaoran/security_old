@@ -26,7 +26,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private TimeInterceptor timeInterceptor;
 
-    // 配置异步支持的
+    // 配置异步拦截器
     @Override
     public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
         // 使用下面这两个方法配置异步拦截器的

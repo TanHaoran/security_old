@@ -42,6 +42,7 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
         logger.info("登录失败");
 
         if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
+            // 失败状态码设置成500
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json/charset=UTF-8");
             response.getWriter().write(objectMapper.writeValueAsString(exception));

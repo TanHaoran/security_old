@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
  * Time: 9:11
  * Description:
  */
-// @Configuration
+@Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -38,31 +38,25 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // 使用httpBasic登录使用下面这个
-        // http.httpBasic()
 
         // 用表单登录，对所有的请求都需要做身份认证
         http.formLogin()
                 // 自定义登录页面
                 .loginPage("/authentication/require")
-                // 自定义表单提交路径
                 .loginProcessingUrl("/authentication/form")
-                // 登录成功后使用自定义的处理器处理
                 .successHandler(myAuthenticationSuccessHandler)
-                // 登录失败后使用自定义的处理器处理
                 .failureHandler(myAuthenticationFailureHandler)
-                // 使用and连接不同的校验项
                 .and()
+                // 对请求做授权
                 .authorizeRequests()
-                // 表示匹配到下面这个页面的时候不需要身份认证，其他页面需要身份认证
+                // 不用登录验证的链接
                 .antMatchers("/authentication/require",
-                        securityProperties.getBrowser().getLoginPage(), "/code/image").permitAll()
+                        securityProperties.getBrowser().getLoginPage()).permitAll()
+                // 任何请求
                 .anyRequest()
+                // 都需要身份认证
                 .authenticated()
-                .and()
-                // 禁用跨站请求伪造防护功能
-                .csrf().disable();
+                // 关闭跨站请求伪造防护
+                .and().csrf().disable();
     }
-
-
 }

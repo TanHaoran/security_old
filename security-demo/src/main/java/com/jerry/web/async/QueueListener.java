@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * User: Jerry
  * Date: 2018/4/3
  * Time: 14:58
- * Description: 模拟一个消息队列监听器，监听消息队列中是否有需要执行的任务
+ * Description: 监听订单处理结果并返回
  */
 @Component
 public class QueueListener implements ApplicationListener<ContextRefreshedEvent> {

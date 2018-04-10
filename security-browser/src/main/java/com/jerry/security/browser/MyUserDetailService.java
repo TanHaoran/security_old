@@ -18,16 +18,11 @@ import org.springframework.stereotype.Component;
  * Time: 9:35
  * Description: 处理用户信息获取逻辑
  */
-// @Component
+@Component
 public class MyUserDetailService implements UserDetailsService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    /**
-     * 处理用户加密解密：
-     * 这个PasswordEncoder会将每次生成的密码加密后在拼接一个随机生成的盐混在一起进行加密，
-     * 所以每次生成的密码串都是不固定的
-     */
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -46,12 +41,10 @@ public class MyUserDetailService implements UserDetailsService {
         // 这里可以从数据库中根据用户名查找用户信息
         // 根据查找到的用户信息判断用户是否被冻结
 
-        // 三个参数：用户名，密码，授权
-//        return new User(username, "123456",
-//                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
-        // 中间四个参数：用户是否可用，账号是否在有效期内，证书是否有效，账号是否没被锁定
         String password = passwordEncoder.encode("123456");
         logger.info("数据库密码是: " + password);
+
+        // 三个参数：用户名，密码，权限
         return new User(username, password,
                 true, true, true, true,
                 AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));

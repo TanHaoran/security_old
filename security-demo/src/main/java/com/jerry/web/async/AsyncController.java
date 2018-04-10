@@ -39,15 +39,6 @@ public class AsyncController {
         DeferredResult<String> result = new DeferredResult<>();
         deferredResultHolder.getMap().put(orderNumber, result);
 
-//        Callable<String> result = () -> {
-//            logger.info("福线程开始");
-//
-//            Thread.sleep(1000);
-//
-//            logger.info("福线程开始");
-//            return "success";
-//        };
-
         logger.info("主线程返回");
 
         return result;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * User: Jerry
  * Date: 2018/4/3
  * Time: 14:46
- * Description: 消息队列
+ * Description: 消息队列，当收到新订单的时候进行订单处理
  */
 @Component
 public class MockQueue {
@@ -26,7 +26,7 @@ public class MockQueue {
 
     public void setPlaceOrder(String placeOrder) throws InterruptedException {
 
-        new Thread(()-> {
+        new Thread(() -> {
             logger.info("接到下单请求, " + placeOrder);
 
             try {

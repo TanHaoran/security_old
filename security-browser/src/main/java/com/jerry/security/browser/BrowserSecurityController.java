@@ -32,8 +32,10 @@ public class BrowserSecurityController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    // 请求缓存
     private RequestCache requestCache = new HttpSessionRequestCache();
 
+    // 跳转的工具类
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Autowired
@@ -48,7 +50,9 @@ public class BrowserSecurityController {
      */
     @RequestMapping("/authentication/require")
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         if (savedRequest != null) {
