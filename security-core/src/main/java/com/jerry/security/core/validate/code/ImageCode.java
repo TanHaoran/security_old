@@ -14,6 +14,7 @@ public class ImageCode {
 
     private BufferedImage image;
 
+    // 验证码
     private String code;
 
     // 图形验证码过期时间
@@ -54,5 +55,9 @@ public class ImageCode {
 
     public void setExpireTime(LocalDateTime expireTime) {
         this.expireTime = expireTime;
+    }
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expireTime);
     }
 }

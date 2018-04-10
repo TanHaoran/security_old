@@ -1,6 +1,7 @@
 package com.jerry.security.browser.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jerry.security.browser.support.SimpleResponse;
 import com.jerry.security.core.properties.LoginType;
 import com.jerry.security.core.properties.SecurityProperties;
 import org.slf4j.Logger;
@@ -35,7 +36,6 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
     @Autowired
     private SecurityProperties securityProperties;
 
-
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
@@ -45,7 +45,7 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
             // 失败状态码设置成500
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json/charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(exception));
+            response.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(exception.getMessage())));
         } else {
             super.onAuthenticationFailure(request, response, exception);
         }
