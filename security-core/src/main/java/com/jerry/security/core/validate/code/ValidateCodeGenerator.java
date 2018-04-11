@@ -8,10 +8,10 @@ import org.springframework.web.context.request.ServletWebRequest;
  * User: Jerry
  * Date: 2018/4/11
  * Time: 11:24
- * Description:
+ * Description: 校验码生成器
  */
 @Component
 public interface ValidateCodeGenerator {
 
-    ImageCode generate(ServletWebRequest request);
+    ValidateCode generate(ServletWebRequest request);
 }

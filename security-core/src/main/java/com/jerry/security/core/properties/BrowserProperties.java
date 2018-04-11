@@ -1,5 +1,7 @@
 package com.jerry.security.core.properties;
 
+import lombok.Data;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Jerry
@@ -7,6 +9,7 @@ package com.jerry.security.core.properties;
  * Time: 10:38
  * Description:
  */
+@Data
 public class BrowserProperties {
 
     /**
@@ -16,19 +19,6 @@ public class BrowserProperties {
 
     private LoginType loginType = LoginType.JSON;
 
-    public String getLoginPage() {
-        return loginPage;
-    }
+    private int rememberMeSeconds = 3600;
 
-    public void setLoginPage(String loginPage) {
-        this.loginPage = loginPage;
-    }
-
-    public LoginType getLoginType() {
-        return loginType;
-    }
-
-    public void setLoginType(LoginType loginType) {
-        this.loginType = loginType;
-    }
 }

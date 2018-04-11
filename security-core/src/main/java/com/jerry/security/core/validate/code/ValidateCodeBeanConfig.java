@@ -1,6 +1,9 @@
 package com.jerry.security.core.validate.code;
 
 import com.jerry.security.core.properties.SecurityProperties;
+import com.jerry.security.core.validate.code.image.ImageCodeGenerator;
+import com.jerry.security.core.validate.code.sms.DefaultSmsCodeSender;
+import com.jerry.security.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -25,5 +28,12 @@ public class ValidateCodeBeanConfig {
         ImageCodeGenerator codeGenerator = new ImageCodeGenerator();
         codeGenerator.setSecurityProperties(securityProperties);
         return codeGenerator;
+    }
+
+    @Bean
+    // @ConditionalOnMissingBean(name = "smsCodeSender")
+    @ConditionalOnMissingBean(DefaultSmsCodeSender.class)
+    public SmsCodeSender smsCodeSender() {
+        return new DefaultSmsCodeSender();
     }
 }

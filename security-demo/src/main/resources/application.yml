@@ -35,10 +35,10 @@ server:
 #    browser:
 #      loginType: REDIRECT
 
-jerry:
-  security:
-    code:
-      image:
-        length: 6
-        width: 100
-        url: /user,/user/*
+#jerry:
+#  security:
+#    code:
+#      image:
+#        length: 6
+#        width: 100
+#        url: /user,/user/*

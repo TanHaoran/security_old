@@ -1,6 +1,7 @@
 package com.jerry.security.core.validate.code;
 
 import com.jerry.security.core.properties.SecurityProperties;
+import com.jerry.security.core.validate.code.image.ImageCode;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -35,6 +36,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
+    // 保存需要拦截的url
     private Set<String> urls = new HashSet<>();
 
     private SecurityProperties securityProperties;
@@ -46,9 +48,13 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         super.afterPropertiesSet();
         String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(
                 securityProperties.getCode().getImage().getUrl(), ",");
-        for (String configUrl : configUrls) {
-            urls.add(configUrl);
+        // 把应用级配置的url加入集合中
+        if (configUrls != null) {
+            for (String configUrl : configUrls) {
+                urls.add(configUrl);
+            }
         }
+        // 登陆页面的也需要图形验证码验证
         urls.add("/authentication/form");
     }
 
@@ -58,13 +64,13 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
         boolean action = false;
 
+        // 请求的url和需要验证的urls集合中匹配，action就为true，即需要验证
         for (String url : urls) {
             if (pathMatcher.match(url, request.getRequestURI())) {
                 action = true;
             }
         }
 
-        // 如果是登录请求就做校验
         if (action) {
             try {
                 validate(new ServletWebRequest(request));
@@ -79,9 +85,11 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     }
 
     private void validate(ServletWebRequest request) throws ServletRequestBindingException {
+        // 从Session拿出生成验证码时的图形验证码
         ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request,
-                ValidateCodeController.SESSION_KEY);
+                ValidateCodeProcessor.SESSION_KEY_PREFIX);
 
+        // 这个imageCode就是html中的图形验证码name
         String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "imageCode");
 
         if (StringUtils.isBlank(codeInRequest)) {
@@ -93,7 +101,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         }
 
         if (codeInSession.isExpired()) {
-            sessionStrategy.removeAttribute(request, ValidateCodeController.SESSION_KEY);
+            sessionStrategy.removeAttribute(request, ValidateCodeProcessor.SESSION_KEY_PREFIX);
             throw new ValidateCodeException("验证码已过期");
         }
 
@@ -102,6 +110,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         }
 
         // 如果验证都成功，那么从session中移除这个请求
-        sessionStrategy.removeAttribute(request, ValidateCodeController.SESSION_KEY);
+        sessionStrategy.removeAttribute(request, ValidateCodeProcessor.SESSION_KEY_PREFIX);
     }
 }

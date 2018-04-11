@@ -1,8 +1,7 @@
 package com.jerry.code;
 
-import com.jerry.security.core.validate.code.ImageCode;
+import com.jerry.security.core.validate.code.image.ImageCode;
 import com.jerry.security.core.validate.code.ValidateCodeGenerator;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
@@ -12,7 +11,7 @@ import org.springframework.web.context.request.ServletWebRequest;
  * Time: 11:38
  * Description:
  */
-@Component("imageCodeGeneratorr")
+// @Component("imageCodeGenerator")
 public class DemoImageCodeGenerator implements ValidateCodeGenerator {
 
     @Override
