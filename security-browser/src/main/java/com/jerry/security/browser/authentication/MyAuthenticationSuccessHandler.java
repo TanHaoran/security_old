@@ -41,6 +41,7 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 
         if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
             response.setContentType("application/json/charset=UTF-8");
+            response.setCharacterEncoding("UTF-8");
             response.getWriter().write(objectMapper.writeValueAsString(authentication));
         } else {
             super.onAuthenticationSuccess(request, response, authentication);

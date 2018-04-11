@@ -1,5 +1,6 @@
 package com.jerry.security.core.properties;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -11,15 +12,10 @@ import org.springframework.stereotype.Component;
  * Description:
  */
 @ConfigurationProperties(prefix = "jerry.security")
+@Data
 public class SecurityProperties {
 
     private BrowserProperties browser = new BrowserProperties();
 
-    public BrowserProperties getBrowser() {
-        return browser;
-    }
-
-    public void setBrowser(BrowserProperties browser) {
-        this.browser = browser;
-    }
+    private ValidateCodeProperties code = new ValidateCodeProperties();
 }

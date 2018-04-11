@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jerry.security.browser.support.SimpleResponse;
 import com.jerry.security.core.properties.LoginType;
 import com.jerry.security.core.properties.SecurityProperties;
+import com.sun.org.apache.xpath.internal.operations.String;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,9 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
 
         if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
             // 失败状态码设置成500
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            // response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json/charset=UTF-8");
+            response.setCharacterEncoding("UTF-8");
             response.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(exception.getMessage())));
         } else {
             super.onAuthenticationFailure(request, response, exception);

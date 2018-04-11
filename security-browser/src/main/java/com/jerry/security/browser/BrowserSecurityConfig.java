@@ -42,6 +42,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
         ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
         validateCodeFilter.setMyAuthenticationFailureHandler(myAuthenticationFailureHandler);
+        validateCodeFilter.setSecurityProperties(securityProperties);
+        validateCodeFilter.afterPropertiesSet();
 
         // 用表单登录，对所有的请求都需要做身份认证
         http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
