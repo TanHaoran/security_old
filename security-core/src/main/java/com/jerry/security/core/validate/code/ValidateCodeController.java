@@ -1,5 +1,6 @@
 package com.jerry.security.core.validate.code;
 
+import com.jerry.security.core.properties.SecurityConstants;
 import com.jerry.security.core.properties.SecurityProperties;
 import com.jerry.security.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +31,14 @@ import java.util.Random;
  * Description:
  */
 @RestController
-@RequestMapping("/code")
 public class ValidateCodeController {
 
-   @Autowired
-   private Map<String, ValidateCodeProcessor> validateCodeProcessors;
+    @Autowired
+    private ValidateCodeProcessorHolder validateCodeProcessorHolder;
 
-    @GetMapping("/{type}")
+    @GetMapping(SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/{type}")
     public void createCode(HttpServletRequest request, HttpServletResponse response, @PathVariable String type)
             throws Exception {
-        validateCodeProcessors.get(type + "CodeProcessor").create(new ServletWebRequest(request, response));
+        validateCodeProcessorHolder.findValidateCodeProcessor(type).create(new ServletWebRequest(request, response));
     }
 }

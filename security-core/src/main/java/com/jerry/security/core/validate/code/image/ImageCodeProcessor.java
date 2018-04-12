@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
  * Time: 0:40
  * Description: 图形验证码处理器
  */
-@Component("imageCodeProcessor")
+@Component("imageValidateCodeProcessor")
 public class ImageCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
 
     @Override

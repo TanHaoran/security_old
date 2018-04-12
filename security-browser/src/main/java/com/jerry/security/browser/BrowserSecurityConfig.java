@@ -1,18 +1,17 @@
 package com.jerry.security.browser;
 
+import com.jerry.security.core.authentication.AbstractChannelSecurityConfig;
+import com.jerry.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.jerry.security.core.properties.SecurityConstants;
 import com.jerry.security.core.properties.SecurityProperties;
-import com.jerry.security.core.validate.code.ValidateCodeFilter;
+import com.jerry.security.core.validate.code.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -26,22 +25,22 @@ import javax.sql.DataSource;
  * Description:
  */
 @Configuration
-public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private SecurityProperties securityProperties;
-
-    @Autowired
-    private AuthenticationSuccessHandler myAuthenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler myAuthenticationFailureHandler;
 
     @Autowired
     private DataSource dataSource;
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -60,24 +59,14 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // 设置自定义验证码过滤器的失败处理器
-        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
-        validateCodeFilter.setMyAuthenticationFailureHandler(myAuthenticationFailureHandler);
-        // 将配置信息设置到过滤器中，并调用初始化方法
-        validateCodeFilter.setSecurityProperties(securityProperties);
-        validateCodeFilter.afterPropertiesSet();
+        applyPasswordAuthenticationConfig(http);
 
         // 用表单登录，对所有的请求都需要做身份认证
-        // 在UsernamePasswordAuthenticationFilter前面加入我们自定义的图形验证码过滤器
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin()
-                // 自定义登录页面
-                .loginPage("/authentication/require")
-                .loginProcessingUrl("/authentication/form")
-                .successHandler(myAuthenticationSuccessHandler)
-                .failureHandler(myAuthenticationFailureHandler)
+        // 在UsernamePasswordAuthenticationFilter前面加入我们自定义的校验码过滤器
+        http.apply(validateCodeSecurityConfig)
                 .and()
-                // 配置记住我
+                .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
                 .rememberMe()
                 // 设置token获取类
                 .tokenRepository(persistentTokenRepository())
@@ -89,9 +78,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 对请求做授权
                 .authorizeRequests()
                 // 不用登录验证的链接
-                .antMatchers("/authentication/require",
+                .antMatchers(
+                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                         securityProperties.getBrowser().getLoginPage(),
-                        "/code/*").permitAll()
+                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"
+                ).permitAll()
                 // 任何请求
                 .anyRequest()
                 // 都需要身份认证

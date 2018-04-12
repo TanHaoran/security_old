@@ -14,7 +14,7 @@ import org.springframework.web.context.request.ServletWebRequest;
  * Time: 0:45
  * Description: 短信验证码处理器
  */
-@Component("smsCodeProcessor")
+@Component("smsValidateCodeProcessor")
 public class SmsCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode> {
 
 
@@ -23,7 +23,7 @@ public class SmsCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode
 
     @Override
     protected void send(ServletWebRequest request, ValidateCode smsCode) throws Exception {
-        String mobile = ServletRequestUtils.getStringParameter(request.getRequest(), "mobile");
+        String mobile = ServletRequestUtils.getRequiredStringParameter(request.getRequest(), "mobile");
 
         // 发送短信验证码
         smsCodeSender.send(mobile, smsCode.getCode());
