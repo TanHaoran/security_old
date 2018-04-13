@@ -46,7 +46,7 @@ public class SmsCodeAuthenticationSecurityConfig extends
                 new SmsCodeAuthenticationProvider();
         smsCodeAuthenticationProvider.setUserDetailsService(userDetailsService);
 
-        // 配置进去，设置在UsernamePasswordAuthenticationFilter之后
+        // 配置进去，设置在UsernamePasswordAuthenticationFilter之后，校验通过后认证的时候使用
         http.authenticationProvider(smsCodeAuthenticationProvider)
                 .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }

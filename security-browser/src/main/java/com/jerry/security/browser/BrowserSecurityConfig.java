@@ -36,9 +36,15 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    /**
+     * 校验码过滤器配置
+     */
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    /**
+     * 自定义的短信校验码认证配置
+     */
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 

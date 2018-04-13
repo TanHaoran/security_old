@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * User: Jerry
  * Date: 2018/4/12
  * Time: 20:43
- * Description: 短信校验码认证过滤器
+ * Description: 短信校验码认证过滤器，在认证通过的时候起作用
  */
 public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
