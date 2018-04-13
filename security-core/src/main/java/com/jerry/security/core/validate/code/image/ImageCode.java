@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  * User: Jerry
  * Date: 2018/4/4
  * Time: 16:56
- * Description: 图形验证码
+ * Description: 图形校验码
  */
 @Data
 public class ImageCode extends ValidateCode {

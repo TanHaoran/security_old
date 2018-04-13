@@ -26,7 +26,7 @@ import java.io.IOException;
  * User: Jerry
  * Date: 2018/4/4
  * Time: 10:23
- * Description:
+ * Description: Browser控制器
  */
 @RestController
 public class BrowserSecurityController {

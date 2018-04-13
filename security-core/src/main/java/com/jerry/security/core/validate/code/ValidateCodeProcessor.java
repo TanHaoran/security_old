@@ -7,28 +7,28 @@ import org.springframework.web.context.request.ServletWebRequest;
  * User: Jerry
  * Date: 2018/4/12
  * Time: 00:29
- * Description: 校验码处理器，封装不同校验码的处理逻辑
+ * Description: 校验码处理器，封装不同校验码的处理逻辑。做两个操作：创建、校验
  */
 public interface ValidateCodeProcessor {
 
-	/**
-	 * 验证码放入session时的前缀
-	 */
-	String SESSION_KEY_PREFIX = "SESSION_KEY_FOR_CODE_";
+    /**
+     * 验证码放入session时的前缀
+     */
+    String SESSION_KEY_PREFIX = "SESSION_KEY_FOR_CODE_";
 
-	/**
-	 * 创建校验码
-	 * 
-	 * @param request
-	 * @throws Exception
-	 */
-	void create(ServletWebRequest request) throws Exception;
+    /**
+     * 创建校验码
+     *
+     * @param request
+     * @throws Exception
+     */
+    void create(ServletWebRequest request) throws Exception;
 
-	/**
-	 * 校验验证码
-	 *
-	 * @param servletWebRequest
-	 * @throws Exception
-	 */
-	void validate(ServletWebRequest servletWebRequest);
+    /**
+     * 校验校验码
+     *
+     * @param servletWebRequest
+     * @throws Exception
+     */
+    void validate(ServletWebRequest servletWebRequest);
 }

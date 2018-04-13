@@ -11,26 +11,41 @@ import java.util.Collection;
  * User: Jerry
  * Date: 2018/4/12
  * Time: 20:35
- * Description:
+ * Description: 短信校验码认证Token
  */
 public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
+    /**
+     * 这里实际保存的是手机号
+     */
     private final Object principal;
 
+    /**
+     * 第一次认证调用这个构造方法
+     *
+     * @param mobile
+     */
     public SmsCodeAuthenticationToken(Object mobile) {
         super(null);
         this.principal = mobile;
+        // 第一次设置认证未通过
         setAuthenticated(false);
     }
 
+    /**
+     * 认证通过后调用这个构造方法
+     *
+     * @param mobile
+     * @param authorities
+     */
     public SmsCodeAuthenticationToken(Object mobile, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = mobile;
-        super.setAuthenticated(true); // must use super, as we override
+        // 必须调用父类的setAuthenticated(true)方法
+        super.setAuthenticated(true);
     }
-
 
     public Object getCredentials() {
         return null;
@@ -40,6 +55,12 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
         return this.principal;
     }
 
+    /**
+     * 设置认证是否通过
+     *
+     * @param isAuthenticated
+     * @throws IllegalArgumentException
+     */
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
         if (isAuthenticated) {
             throw new IllegalArgumentException(
@@ -49,6 +70,9 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
         super.setAuthenticated(false);
     }
 
+    /**
+     * 抹去认证
+     */
     @Override
     public void eraseCredentials() {
         super.eraseCredentials();

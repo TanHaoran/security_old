@@ -7,12 +7,18 @@ import lombok.Data;
  * User: Jerry
  * Date: 2018/4/11
  * Time: 10:41
- * Description:
+ * Description: 校验码相关属性
  */
 @Data
 public class ValidateCodeProperties {
 
+    /**
+     * 图形校验码属性
+     */
     private ImageCodeProperties image = new ImageCodeProperties();
 
+    /**
+     * 短信校验码属性
+     */
     private SmsCodeProperties sms = new SmsCodeProperties();
 }

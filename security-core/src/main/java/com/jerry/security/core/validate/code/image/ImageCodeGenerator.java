@@ -16,24 +16,24 @@ import java.util.Random;
  * User: Jerry
  * Date: 2018/4/11
  * Time: 11:25
- * Description:
+ * Description: 图形校验码生成器
  */
 @Data
 public class ImageCodeGenerator implements ValidateCodeGenerator {
-
 
     @Autowired
     private SecurityProperties securityProperties;
 
     /**
      * 生成图形验证码
+     *
      * @param request
      * @return
      */
     @Override
     public ImageCode generate(ServletWebRequest request) {
 
-        // 图片的长高
+        // 图形的宽高
         int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width",
                 securityProperties.getCode().getImage().getWidth());
         int height = ServletRequestUtils.getIntParameter(request.getRequest(), "height",
@@ -58,7 +58,7 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
         }
 
         String sRand = "";
-        // 4是图形验证码的长度
+        // 读取配置中图形验证码的长度
         for (int i = 0; i < securityProperties.getCode().getImage().getLength(); i++) {
             String rand = String.valueOf(random.nextInt(10));
             sRand += rand;
@@ -68,7 +68,7 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
 
         g.dispose();
 
-        // 有效期60秒
+        // 调用包含有效期的构造方法
         return new ImageCode(image, sRand, securityProperties.getCode().getImage().getExpireIn());
     }
 

@@ -36,6 +36,7 @@ public class SmsCodeGenerator implements ValidateCodeGenerator {
      */
     @Override
     public ValidateCode generate(ServletWebRequest request) {
+        // 产生随机的数字字符串
         String code = RandomStringUtils.randomNumeric(securityProperties.getCode().getSms().getLength());
         return new ValidateCode(code, securityProperties.getCode().getSms().getExpireIn());
     }

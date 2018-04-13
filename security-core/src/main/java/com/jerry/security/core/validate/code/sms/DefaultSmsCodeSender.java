@@ -5,7 +5,7 @@ package com.jerry.security.core.validate.code.sms;
  * User: Jerry
  * Date: 2018/4/11
  * Time: 23:45
- * Description:
+ * Description: 一个默认实现的模拟的短信发送器
  */
 public class DefaultSmsCodeSender implements SmsCodeSender {
     @Override

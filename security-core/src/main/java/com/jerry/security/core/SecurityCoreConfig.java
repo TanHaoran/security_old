@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * User: Jerry
  * Date: 2018/4/4
  * Time: 10:45
- * Description:
+ * Description: 主配置类
  */
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * User: Jerry
  * Date: 2018/4/4
  * Time: 9:35
- * Description: 处理用户信息获取逻辑
+ * Description: 自定义用户信息获取逻辑
  */
 @Component
 public class MyUserDetailService implements UserDetailsService {

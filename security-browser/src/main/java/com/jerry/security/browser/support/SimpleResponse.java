@@ -5,7 +5,7 @@ package com.jerry.security.browser.support;
  * User: Jerry
  * Date: 2018/4/4
  * Time: 10:32
- * Description:
+ * Description: 简单的响应对象
  */
 public class SimpleResponse {
 

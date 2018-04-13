@@ -5,7 +5,7 @@ package com.jerry.security.core.properties;
  * User: Jerry
  * Date: 2018/4/4
  * Time: 13:36
- * Description:
+ * Description: 登录后的处理方式
  */
 public enum LoginType {
 

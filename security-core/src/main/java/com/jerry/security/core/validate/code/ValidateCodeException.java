@@ -8,7 +8,7 @@ import org.springframework.security.core.AuthenticationException;
  * User: Jerry
  * Date: 2018/4/10
  * Time: 22:04
- * Description:
+ * Description: 校验码异常类
  */
 public class ValidateCodeException extends AuthenticationException {
 

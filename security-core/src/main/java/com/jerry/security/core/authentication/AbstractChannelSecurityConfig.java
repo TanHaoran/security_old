@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
  * User: Jerry
  * Date: 2018/4/12
  * Time: 22:36
- * Description:
+ * Description: 登录相关配置类
  */
 public class AbstractChannelSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -24,7 +24,9 @@ public class AbstractChannelSecurityConfig extends WebSecurityConfigurerAdapter 
 
     protected void applyPasswordAuthenticationConfig(HttpSecurity http) throws Exception {
         http.formLogin()
+                // 自定义登陆页面
                 .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
+                // 自定义登录处理页面
                 .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
                 .successHandler(myAuthenticationSuccessHandler)
                 .failureHandler(myAuthenticationFailureHandler);

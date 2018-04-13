@@ -16,9 +16,9 @@ import java.util.Map;
  * User: Jerry
  * Date: 2018/4/12
  * Time: 0:30
- * Description:
+ * Description: 校验码处理器抽象类，需要一个ValidateCode的子类作为泛型参数，实现了校验码处理器接口。
  */
-public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> implements ValidateCodeProcessor {
+public abstract class AbstractValidateCodeProcessor<T extends ValidateCode> implements ValidateCodeProcessor {
 
     /**
      * 操作session的工具类
@@ -31,10 +31,16 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
     @Autowired
     private Map<String, ValidateCodeGenerator> validateCodeGenerators;
 
+    /**
+     * 做三个操作：生成、保存、发送
+     *
+     * @param request
+     * @throws Exception
+     */
     @Override
     public void create(ServletWebRequest request) throws Exception {
         // 生成校验码
-        C validateCode = generate(request);
+        T validateCode = generate(request);
         // 保存校验码
         save(request, validateCode);
         // 发送校验码
@@ -47,21 +53,20 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      * @param request
      * @return
      */
-    private C generate(ServletWebRequest request) {
-        String type = getProcessorType(request);
+    private T generate(ServletWebRequest request) {
+        String type = getValidateCodeType().toString().toLowerCase();
         ValidateCodeGenerator validateCodeGenerator = validateCodeGenerators.get(type + "CodeGenerator");
-        return (C) validateCodeGenerator.generate(request);
+        return (T) validateCodeGenerator.generate(request);
     }
 
     /**
-     * 保存校验码
+     * 保存校验码到session中
      *
      * @param request
      * @param validateCode
      */
-    private void save(ServletWebRequest request, C validateCode) {
-        sessionStrategy.setAttribute(request, SESSION_KEY_PREFIX + getProcessorType(request).toUpperCase(),
-                validateCode);
+    private void save(ServletWebRequest request, T validateCode) {
+        sessionStrategy.setAttribute(request, getSessionKey(), validateCode);
     }
 
     /**
@@ -71,56 +76,14 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      * @param validateCode
      * @throws Exception
      */
-    protected abstract void send(ServletWebRequest request, C validateCode) throws Exception;
-
-    private String getProcessorType(ServletWebRequest request) {
-        return StringUtils.substringAfter(request.getRequest().getRequestURI(), "/code/");
-    }
-
-    @Override
-    public void validate(ServletWebRequest request) {
-
-        ValidateCodeType processorType = getValidateCodeType(request);
-        String sessionKey = getSessionKey(request);
-
-        C codeInSession = (C) sessionStrategy.getAttribute(request, sessionKey);
-
-        String codeInRequest;
-        try {
-            codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),
-                    processorType.getParamNameOnValidate());
-        } catch (ServletRequestBindingException e) {
-            throw new ValidateCodeException("获取验证码的值失败");
-        }
-
-        if (StringUtils.isBlank(codeInRequest)) {
-            throw new ValidateCodeException(processorType + "验证码的值不能为空");
-        }
-
-        if (codeInSession == null) {
-            throw new ValidateCodeException(processorType + "验证码不存在");
-        }
-
-        if (codeInSession.isExpired()) {
-            sessionStrategy.removeAttribute(request, sessionKey);
-            throw new ValidateCodeException(processorType + "验证码已过期");
-        }
-
-        if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
-            throw new ValidateCodeException(processorType + "验证码不匹配");
-        }
-
-        sessionStrategy.removeAttribute(request, sessionKey);
-    }
-
+    protected abstract void send(ServletWebRequest request, T validateCode) throws Exception;
 
     /**
-     * 根据请求的url获取校验码的类型
+     * 根据当前的校验码处理器获取校验码的类型
      *
-     * @param request
      * @return
      */
-    private ValidateCodeType getValidateCodeType(ServletWebRequest request) {
+    private ValidateCodeType getValidateCodeType() {
         String type = StringUtils.substringBefore(getClass().getSimpleName(), "CodeProcessor");
         return ValidateCodeType.valueOf(type.toUpperCase());
     }
@@ -128,10 +91,50 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
     /**
      * 构建验证码放入session时的key
      *
-     * @param request
      * @return
      */
-    private String getSessionKey(ServletWebRequest request) {
-        return SESSION_KEY_PREFIX + getValidateCodeType(request).toString().toUpperCase();
+    private String getSessionKey() {
+        return SESSION_KEY_PREFIX + getValidateCodeType().toString().toUpperCase();
+    }
+
+    /**
+     * 校验校验码
+     *
+     * @param request
+     */
+    @Override
+    public void validate(ServletWebRequest request) {
+
+        ValidateCodeType processorType = getValidateCodeType();
+        String sessionKey = getSessionKey();
+
+        T codeInSession = (T) sessionStrategy.getAttribute(request, sessionKey);
+
+        String codeInRequest;
+        try {
+            codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),
+                    processorType.getParamNameOnValidate());
+        } catch (ServletRequestBindingException e) {
+            throw new ValidateCodeException("获取校验码的值失败");
+        }
+
+        if (StringUtils.isBlank(codeInRequest)) {
+            throw new ValidateCodeException(processorType + "校验码的值不能为空");
+        }
+
+        if (codeInSession == null) {
+            throw new ValidateCodeException(processorType + "校验码不存在");
+        }
+
+        if (codeInSession.isExpired()) {
+            sessionStrategy.removeAttribute(request, sessionKey);
+            throw new ValidateCodeException(processorType + "校验码已过期");
+        }
+
+        if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
+            throw new ValidateCodeException(processorType + "校验码不匹配");
+        }
+
+        sessionStrategy.removeAttribute(request, sessionKey);
     }
 }

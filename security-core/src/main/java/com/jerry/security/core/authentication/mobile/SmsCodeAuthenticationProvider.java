@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * User: Jerry
  * Date: 2018/4/12
  * Time: 20:56
- * Description:
+ * Description: 短信校验码认证Provider
  */
 @Data
 public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
@@ -22,6 +22,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        // 这里强转成我们自己定义的SmsCodeAuthenticationToken
         SmsCodeAuthenticationToken authenticationToken = (SmsCodeAuthenticationToken) authentication;
         UserDetails userDetails = userDetailsService.loadUserByUsername((String) authenticationToken.getPrincipal());
 
@@ -32,6 +33,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
         SmsCodeAuthenticationToken authenticationResult =
                 new SmsCodeAuthenticationToken(userDetails, userDetails.getAuthorities());
 
+        // 还需要将开始认证时的Details复制到新的SmsCodeAuthenticationToken中
         authenticationResult.setDetails(authenticationToken.getDetails());
 
         return authenticationResult;
@@ -39,6 +41,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
+        // 只支持SmsCodeAuthenticationToken类型的Token
         return SmsCodeAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

@@ -22,7 +22,7 @@ import javax.sql.DataSource;
  * User: Jerry
  * Date: 2018/4/4
  * Time: 9:11
- * Description:
+ * Description: 配置主类
  */
 @Configuration
 public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {

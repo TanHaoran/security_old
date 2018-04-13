@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * User: Jerry
  * Date: 2018/4/12
  * Time: 21:19
- * Description:
+ * Description: 短信校验码认证配置
  */
 @Component
 public class SmsCodeAuthenticationSecurityConfig extends
@@ -32,9 +32,9 @@ public class SmsCodeAuthenticationSecurityConfig extends
     private UserDetailsService userDetailsService;
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) {
 
-        // 设置过滤器
+        // 设置短信校验码认证过滤器
         SmsCodeAuthenticationFilter smsCodeAuthenticationFilter =
                 new SmsCodeAuthenticationFilter();
         smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
@@ -46,7 +46,7 @@ public class SmsCodeAuthenticationSecurityConfig extends
                 new SmsCodeAuthenticationProvider();
         smsCodeAuthenticationProvider.setUserDetailsService(userDetailsService);
 
-        // 配置进去
+        // 配置进去，设置在UsernamePasswordAuthenticationFilter之后
         http.authenticationProvider(smsCodeAuthenticationProvider)
                 .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }

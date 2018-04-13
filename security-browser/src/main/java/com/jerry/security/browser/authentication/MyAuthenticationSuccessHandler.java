@@ -21,7 +21,7 @@ import java.io.IOException;
  * User: Jerry
  * Date: 2018/4/4
  * Time: 13:08
- * Description:
+ * Description: 自定义认证失败处理器
  */
 @Component("myAuthenticationSuccessHandler")
 public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {

@@ -24,7 +24,7 @@ import java.io.IOException;
  * User: Jerry
  * Date: 2018/4/4
  * Time: 13:25
- * Description:
+ * Description: 自定义认证成功处理器
  */
 @Component("myAuthenticationFailureHandler")
 public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {

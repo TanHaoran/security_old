@@ -15,10 +15,16 @@ public class BrowserProperties {
     /**
      * 默认的认证页面
      */
-    private String loginPage = "/signIn.html";
+    private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
 
+    /**
+     * 默认的请求返回类型
+     */
     private LoginType loginType = LoginType.JSON;
 
+    /**
+     * 记住我的时间
+     */
     private int rememberMeSeconds = 3600;
 
 }

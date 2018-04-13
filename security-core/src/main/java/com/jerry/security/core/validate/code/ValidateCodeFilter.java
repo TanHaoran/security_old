@@ -25,30 +25,34 @@ import java.util.Set;
  * User: Jerry
  * Date: 2018/4/10
  * Time: 21:55
- * Description:
+ * Description: 校验码过滤器
  */
 @Component("validateCodeFilter")
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
     /**
-     * 验证码校验失败处理器
+     * 校验失败处理器
      */
     @Autowired
     private AuthenticationFailureHandler myAuthenticationFailureHandler;
+
     /**
      * 系统配置信息
      */
     @Autowired
     private SecurityProperties securityProperties;
+
     /**
-     * 系统中的校验码处理器
+     * 系统中的校验码处理器工具类
      */
     @Autowired
     private ValidateCodeProcessorHolder validateCodeProcessorHolder;
+
     /**
-     * 存放所有需要校验验证码的url
+     * 存放所有需要校验验证码的url，key放url路径，value放校验类型
      */
     private Map<String, ValidateCodeType> urlMap = new HashMap<>();
+
     /**
      * 验证请求url与配置的url是否匹配的工具类
      */
@@ -61,17 +65,21 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
 
+        // 将登录页表单加入需要校验集合中
         urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM, ValidateCodeType.IMAGE);
+        // 将配置需要校验的地址加入集合中
         addUrlToMap(securityProperties.getCode().getImage().getUrl(), ValidateCodeType.IMAGE);
 
+        // 将登录页表单加入需要校验集合中
         urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, ValidateCodeType.SMS);
+        // 将配置需要校验的地址加入集合中
         addUrlToMap(securityProperties.getCode().getSms().getUrl(), ValidateCodeType.SMS);
     }
 
     /**
      * 讲系统中配置的需要校验验证码的URL根据校验的类型放入map
      *
-     * @param urlString
+     * @param urlString 一些用逗号拼接的字符串
      * @param type
      */
     protected void addUrlToMap(String urlString, ValidateCodeType type) {
@@ -89,19 +97,19 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
         ValidateCodeType type = getValidateCodeType(request);
         if (type != null) {
-            logger.info("校验请求(" + request.getRequestURI() + ")中的验证码,验证码类型" + type);
+            logger.info("校验请求【" + request.getRequestURI() + "】中的验证码，验证码类型是【" + type + "】");
             try {
                 validateCodeProcessorHolder.findValidateCodeProcessor(type)
                         .validate(new ServletWebRequest(request, response));
-                logger.info("验证码校验通过");
+                logger.info("校验码校验通过");
             } catch (ValidateCodeException exception) {
                 myAuthenticationFailureHandler.onAuthenticationFailure(request, response, exception);
+                // 校验发生异常直接返回，不走后面的过滤器
                 return;
             }
         }
 
         chain.doFilter(request, response);
-
     }
 
     /**
@@ -112,6 +120,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
      */
     private ValidateCodeType getValidateCodeType(HttpServletRequest request) {
         ValidateCodeType result = null;
+        // 获取校验码的请求必须是get类型
         if (!StringUtils.equalsIgnoreCase(request.getMethod(), "get")) {
             Set<String> urls = urlMap.keySet();
             for (String url : urls) {

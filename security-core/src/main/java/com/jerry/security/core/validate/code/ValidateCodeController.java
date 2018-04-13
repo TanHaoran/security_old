@@ -28,7 +28,7 @@ import java.util.Random;
  * User: Jerry
  * Date: 2018/4/4
  * Time: 16:59
- * Description:
+ * Description: 校验码控制器
  */
 @RestController
 public class ValidateCodeController {

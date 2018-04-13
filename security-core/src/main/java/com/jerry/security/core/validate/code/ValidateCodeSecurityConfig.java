@@ -9,14 +9,22 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
 
+/**
+ * Created with IntelliJ IDEA.
+ * User: Jerry
+ * Date: 2018/4/12
+ * Time: 0:30
+ * Description: 校验码配置类
+ */
 @Component("validateCodeSecurityConfig")
 public class ValidateCodeSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-	@Autowired
-	private Filter validateCodeFilter;
-	
-	@Override
-	public void configure(HttpSecurity http) throws Exception {
-		http.addFilterBefore(validateCodeFilter, AbstractPreAuthenticatedProcessingFilter.class);
-	}
+    @Autowired
+    private Filter validateCodeFilter;
+
+    @Override
+    public void configure(HttpSecurity http) {
+        // 在预认证处理器过滤器之前加入我们的校验码处理器
+        http.addFilterBefore(validateCodeFilter, AbstractPreAuthenticatedProcessingFilter.class);
+    }
 }
