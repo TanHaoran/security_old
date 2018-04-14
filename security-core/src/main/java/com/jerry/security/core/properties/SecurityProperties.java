@@ -2,7 +2,6 @@ package com.jerry.security.core.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,4 +23,9 @@ public class SecurityProperties {
      * 校验码相关属性
      */
     private ValidateCodeProperties code = new ValidateCodeProperties();
+
+    /**
+     * 社交相关属性
+     */
+    private SocialProperties social = new SocialProperties();
 }

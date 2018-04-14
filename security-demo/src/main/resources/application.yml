@@ -23,7 +23,16 @@ security:
   basic:
     enabled: true
 server:
-  port: 8060
+  port: 80
+
+jerry:
+  security:
+    social:
+      qq:
+        app-id: 100550231
+        app-secret: 69b6ab57b22f3c2fe6a6149274e3295e
+        providerId: callback.do
+      filterProcessesUrl: /qqLogin
 
 #jerry:
 #  security:
