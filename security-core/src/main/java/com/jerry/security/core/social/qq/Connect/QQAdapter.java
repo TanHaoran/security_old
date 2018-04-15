@@ -16,6 +16,7 @@ import org.springframework.social.connect.UserProfile;
 public class QQAdapter implements ApiAdapter<QQ> {
     @Override
     public boolean test(QQ api) {
+        // 测试QQ是否可用
         return true;
     }
 
@@ -38,6 +39,7 @@ public class QQAdapter implements ApiAdapter<QQ> {
 
     @Override
     public void updateStatus(QQ api, String message) {
+        // 某些社交网站会有更新状态的操作
         // do nothing
     }
 }
