@@ -23,12 +23,12 @@ public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
     /**
      * 根据accessToken获取用户openid
      */
-    private static final String URL_GET_OPENID = "http://graph.qq.com/oauth2.0/me?access_token=%s";
+    private static final String URL_GET_OPENID = "https://graph.qq.com/oauth2.0/me?access_token=%s";
 
     /**
      * 获取用户信息
      */
-    private static final String URL_GET_USER_INFO = "http://graph.qq.com/get_user_info?oauth_consumer_key=%s&openid=%s";
+    private static final String URL_GET_USER_INFO = "https://graph.qq.com/user/get_user_info?oauth_consumer_key=%s&openid=%s";
 
     private String appId;
 
@@ -47,7 +47,7 @@ public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
 
         logger.info("获取openid数据:" + result);
 
-        this.openId = StringUtils.substringBetween(result, "\"openid\":\"" + "\"}");
+        this.openId = StringUtils.substringBetween(result, "\"openid\":\"", "\"}");
     }
 
     @Override
