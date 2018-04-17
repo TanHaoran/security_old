@@ -33,6 +33,8 @@ jerry:
         app-secret: 69b6ab57b22f3c2fe6a6149274e3295e
         providerId: callback.do
       filterProcessesUrl: /qqLogin
+    browser:
+      signUpUrl: /demo-signUp.html
 
 #jerry:
 #  security:

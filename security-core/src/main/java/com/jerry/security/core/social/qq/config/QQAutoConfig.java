@@ -7,7 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.social.SocialAutoConfigurerAdapter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.connect.ConnectionFactory;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
+
+import javax.sql.DataSource;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,6 +25,7 @@ import org.springframework.social.connect.ConnectionFactory;
  */
 @Configuration
 @ConditionalOnProperty(prefix = "jerry.security.social.qq", name = "app-id")
+@Order(2)
 public class QQAutoConfig extends SocialAutoConfigurerAdapter {
 
     @Autowired

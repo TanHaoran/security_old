@@ -18,6 +18,12 @@ public class BrowserProperties {
     private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
 
     /**
+     * 默认的注册页面
+     */
+    private String signUpUrl = SecurityConstants.DEFAULT_SIGN_UP_URL;
+
+
+    /**
      * 默认的请求返回类型
      */
     private LoginType loginType = LoginType.JSON;
