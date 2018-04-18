@@ -23,7 +23,9 @@ security:
   basic:
     enabled: true
 server:
-  port: 80
+  port: 8060
+  session:
+    timeout: 600
 
 jerry:
   security:

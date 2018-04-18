@@ -17,6 +17,6 @@ public class DemoConnectionSignUp implements ConnectionSignUp {
     @Override
     public String execute(Connection<?> connection) {
         // 根据社交用户信息默认创建用户并放回用户唯一标识
-        return connection.getKey().getProviderUserId();
+        return connection.getDisplayName();
     }
 }
