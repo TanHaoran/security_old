@@ -1,9 +1,8 @@
-package com.jerry.security.core.social.qq.Connect;
+package com.jerry.security.core.social.qq.connect;
 
 import com.jerry.security.core.social.qq.api.QQ;
 import com.jerry.security.core.social.qq.api.QQImpl;
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
-import org.springframework.social.oauth2.OAuth2Template;
 
 /**
  * Created with IntelliJ IDEA.

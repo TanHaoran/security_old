@@ -1,4 +1,4 @@
-package com.jerry.security.core.social.qq.Connect;
+package com.jerry.security.core.social.qq.connect;
 
 import com.jerry.security.core.social.qq.api.QQ;
 import org.springframework.social.connect.support.OAuth2ConnectionFactory;

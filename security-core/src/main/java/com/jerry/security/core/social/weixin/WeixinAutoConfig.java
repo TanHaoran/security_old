@@ -1,34 +1,33 @@
-package com.jerry.security.core.social.qq.config;
+package com.jerry.security.core.social.weixin;
 
-import com.jerry.security.core.properties.QQProperties;
 import com.jerry.security.core.properties.SecurityProperties;
-import com.jerry.security.core.social.qq.connect.QQConnectionFactory;
+import com.jerry.security.core.properties.WeixinProperties;
+import com.jerry.security.core.social.weixin.connect.WeixinConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.social.SocialAutoConfigurerAdapter;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.social.connect.ConnectionFactory;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Jerry
- * Date: 2018/4/14
- * Time: 22:12
+ * Date: 2018/4/18
+ * Time: 11:08
  * Description:
  */
 @Configuration
-@ConditionalOnProperty(prefix = "jerry.security.social.qq", name = "app-id")
-@Order(2)
-public class QQAutoConfig extends SocialAutoConfigurerAdapter {
+@ConditionalOnProperty(prefix = "jerry.security.social.weixin", name = "app-id")
+public class WeixinAutoConfig extends SocialAutoConfigurerAdapter {
 
     @Autowired
     private SecurityProperties securityProperties;
 
     @Override
     protected ConnectionFactory<?> createConnectionFactory() {
-        QQProperties qqProperties = securityProperties.getSocial().getQq();
-        return new QQConnectionFactory(qqProperties.getProviderId(), qqProperties.getAppId(),
-                qqProperties.getAppSecret());
+        WeixinProperties weixinConfig = securityProperties.getSocial().getWeixin();
+        return new WeixinConnectionFactory(weixinConfig.getProviderId(), weixinConfig.getAppId(),
+                weixinConfig.getAppSecret());
     }
+
 }

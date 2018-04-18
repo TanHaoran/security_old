@@ -1,4 +1,4 @@
-package com.jerry.security.core.social.qq.Connect;
+package com.jerry.security.core.social.qq.connect;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
