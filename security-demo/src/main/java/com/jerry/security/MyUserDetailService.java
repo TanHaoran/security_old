@@ -64,6 +64,6 @@ public class MyUserDetailService implements UserDetailsService, SocialUserDetail
         // 三个参数：用户名，密码，权限
         return new SocialUser(userId, password,
                 true, true, true, true,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin, ROLE_USER"));
     }
 }

@@ -1,9 +1,9 @@
 package com.jerry.security.browser;
 
-import com.jerry.security.browser.support.SimpleResponse;
 import com.jerry.security.browser.support.SocialUserInfo;
 import com.jerry.security.core.properties.SecurityConstants;
 import com.jerry.security.core.properties.SecurityProperties;
+import com.jerry.security.core.support.SimpleResponse;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

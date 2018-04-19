@@ -22,6 +22,10 @@ spring:
 security:
   basic:
     enabled: true
+  oauth2:
+    client:
+      client-id: jerry
+      client-secret: jerrysecret
 server:
   port: 8060
   session:
@@ -42,6 +46,7 @@ jerry:
     browser:
       signUpUrl: /demo-signUp.html
       signOutUrl: /demo-logout.html
+
 
 #jerry:
 #  security:

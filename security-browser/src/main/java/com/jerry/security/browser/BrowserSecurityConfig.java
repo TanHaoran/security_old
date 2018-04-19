@@ -65,10 +65,6 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private LogoutSuccessHandler logoutSuccessHandler;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
@@ -119,6 +115,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 // 退出成功后跳转页面
                 // .logoutSuccessUrl("/logout.html")
                 .logoutSuccessHandler(logoutSuccessHandler)
+                // 也可以指定清除某个Cookies
                 .deleteCookies("JSESSIONID")
                 .and()
 
