@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -61,6 +62,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private InvalidSessionStrategy invalidSessionStrategy;
 
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -84,10 +88,13 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
         // 在UsernamePasswordAuthenticationFilter前面加入我们自定义的校验码过滤器
         http.apply(validateCodeSecurityConfig)
                 .and()
+
                 .apply(smsCodeAuthenticationSecurityConfig)
                 .and()
+
                 .apply(securitySocialConfigurer)
                 .and()
+
                 .rememberMe()
                 // 设置token获取类
                 .tokenRepository(persistentTokenRepository())
@@ -96,13 +103,25 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 // 设置验证规则
                 .userDetailsService(userDetailsService)
                 .and()
+
                 .sessionManagement()
                 .invalidSessionStrategy(invalidSessionStrategy)
                 .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
                 .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
                 .expiredSessionStrategy(sessionInformationExpiredStrategy)
                 .and()
+
                 .and()
+
+                .logout()
+                // 退出的URL
+                // .logoutUrl("/signOut")
+                // 退出成功后跳转页面
+                // .logoutSuccessUrl("/logout.html")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("JSESSIONID")
+                .and()
+
                 // 对请求做授权
                 .authorizeRequests()
                 // 不用登录验证的链接
@@ -114,6 +133,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                         securityProperties.getBrowser().getSignUpUrl(),
                         securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".json",
                         securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".html",
+                        securityProperties.getBrowser().getSignOutUrl(),
                         "/user/register"
                 ).permitAll()
                 // 任何请求

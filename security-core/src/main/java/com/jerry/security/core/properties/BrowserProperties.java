@@ -22,6 +22,11 @@ public class BrowserProperties {
      */
     private String signUpUrl = SecurityConstants.DEFAULT_SIGN_UP_URL;
 
+    /**
+     * 默认的退出页面
+     */
+    private String signOutUrl;
+
 
     /**
      * 默认的请求返回类型

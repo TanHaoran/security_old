@@ -5,7 +5,7 @@ spring:
     username: root
     password: Ywm@mysql36
   session:
-    store-type: none
+    store-type: REDIS
   redis:
     # 这里决定使用哪个库，最大是15
     database: 2
@@ -41,6 +41,7 @@ jerry:
       filterProcessesUrl: /qqLogin
     browser:
       signUpUrl: /demo-signUp.html
+      signOutUrl: /demo-logout.html
 
 #jerry:
 #  security:

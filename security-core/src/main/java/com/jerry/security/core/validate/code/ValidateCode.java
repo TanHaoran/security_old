@@ -3,6 +3,7 @@ package com.jerry.security.core.validate.code;
 import lombok.Data;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
  * Description: 短信校验码
  */
 @Data
-public class ValidateCode {
+public class ValidateCode implements Serializable {
 
     /**
      * 校验码内容

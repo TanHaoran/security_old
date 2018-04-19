@@ -66,7 +66,9 @@ public abstract class AbstractValidateCodeProcessor<T extends ValidateCode> impl
      * @param validateCode
      */
     private void save(ServletWebRequest request, T validateCode) {
-        sessionStrategy.setAttribute(request, getSessionKey(), validateCode);
+        // 取出验证码内容和过期时间，避免了放置图像到Redis而报错
+        ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
+        sessionStrategy.setAttribute(request, getSessionKey(), code);
     }
 
     /**
