@@ -31,6 +31,9 @@ public abstract class AbstractValidateCodeProcessor<T extends ValidateCode> impl
     @Autowired
     private Map<String, ValidateCodeGenerator> validateCodeGenerators;
 
+    @Autowired
+    private ValidateCodeRepository validateCodeRepository;
+
     /**
      * 做三个操作：生成、保存、发送
      *
@@ -68,7 +71,7 @@ public abstract class AbstractValidateCodeProcessor<T extends ValidateCode> impl
     private void save(ServletWebRequest request, T validateCode) {
         // 取出验证码内容和过期时间，避免了放置图像到Redis而报错
         ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
-        sessionStrategy.setAttribute(request, getSessionKey(), code);
+        validateCodeRepository.save(request, validateCode, getValidateCodeType());
     }
 
     /**
@@ -108,9 +111,8 @@ public abstract class AbstractValidateCodeProcessor<T extends ValidateCode> impl
     public void validate(ServletWebRequest request) {
 
         ValidateCodeType processorType = getValidateCodeType();
-        String sessionKey = getSessionKey();
 
-        T codeInSession = (T) sessionStrategy.getAttribute(request, sessionKey);
+        T codeInSession = (T) validateCodeRepository.get(request, getValidateCodeType());
 
         String codeInRequest;
         try {
@@ -129,7 +131,7 @@ public abstract class AbstractValidateCodeProcessor<T extends ValidateCode> impl
         }
 
         if (codeInSession.isExpired()) {
-            sessionStrategy.removeAttribute(request, sessionKey);
+            validateCodeRepository.remove(request, getValidateCodeType());
             throw new ValidateCodeException(processorType + "校验码已过期");
         }
 
@@ -137,6 +139,6 @@ public abstract class AbstractValidateCodeProcessor<T extends ValidateCode> impl
             throw new ValidateCodeException(processorType + "校验码不匹配");
         }
 
-        sessionStrategy.removeAttribute(request, sessionKey);
+        validateCodeRepository.remove(request, getValidateCodeType());
     }
 }
