@@ -1,5 +1,6 @@
 package com.jerry.security.app;
 
+import com.jerry.security.app.authentication.openid.OpenIdAuthenticationSecurityConfig;
 import com.jerry.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.jerry.security.core.properties.SecurityConstants;
 import com.jerry.security.core.properties.SecurityProperties;
@@ -39,6 +40,8 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private SpringSocialConfigurer securitySocialConfigurer;
 
+    @Autowired
+    private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -64,6 +67,9 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .and()
 
                 .apply(securitySocialConfigurer)
+                .and()
+
+                .apply(openIdAuthenticationSecurityConfig)
                 .and()
 
                 // 对请求做授权

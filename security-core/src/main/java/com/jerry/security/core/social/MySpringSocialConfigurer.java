@@ -1,5 +1,6 @@
 package com.jerry.security.core.social;
 
+import lombok.Data;
 import org.springframework.social.security.SocialAuthenticationFilter;
 import org.springframework.social.security.SpringSocialConfigurer;
 
@@ -10,9 +11,12 @@ import org.springframework.social.security.SpringSocialConfigurer;
  * Time: 23:47
  * Description:
  */
+@Data
 public class MySpringSocialConfigurer extends SpringSocialConfigurer {
 
     private String filterProcessesUrl;
+
+    private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
 
     public MySpringSocialConfigurer(String filterProcessesUrl) {
         this.filterProcessesUrl = filterProcessesUrl;
@@ -22,6 +26,9 @@ public class MySpringSocialConfigurer extends SpringSocialConfigurer {
     protected <T> T postProcess(T object) {
         SocialAuthenticationFilter filter = (SocialAuthenticationFilter) super.postProcess(object);
         filter.setFilterProcessesUrl(filterProcessesUrl);
+        if (socialAuthenticationFilterPostProcessor != null) {
+            socialAuthenticationFilterPostProcessor.process(filter);
+        }
         return (T) filter;
     }
 }
